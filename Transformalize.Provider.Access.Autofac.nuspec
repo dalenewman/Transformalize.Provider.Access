@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>Transformalize.Provider.Access.Autofac</id>
-    <version>0.2.9.1-beta</version>
+    <version>0.2.9.2-beta</version>
     <title>Transformalize Provider for 32-bit Access Autofac Module</title>
     <authors>Dale Newman</authors>
     <owners>Dale Newman</owners>
@@ -16,7 +16,7 @@
     <dependencies>
       <group targetFramework="net452">
         <dependency id="Autofac" version="4.6.2" />
-        <dependency id="Transformalize.Provider.Ado" version="0.2.9.1-beta" />
+        <dependency id="Transformalize.Provider.Access" version="0.2.9.2-beta" />
       </group>
     </dependencies>
   </metadata>
