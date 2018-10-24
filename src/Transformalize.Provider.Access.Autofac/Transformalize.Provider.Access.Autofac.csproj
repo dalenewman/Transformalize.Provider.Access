@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Transformalize.Providers.Access.Autofac</RootNamespace>
     <AssemblyName>Transformalize.Provider.Access.Autofac</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -65,18 +66,21 @@
     <Compile Include="TransformFactory.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Transformalize.Provider.Access\Transformalize.Provider.Access.csproj">
       <Project>{c8e14f90-ad0b-42f3-924b-9d6f3852267f}</Project>
       <Name>Transformalize.Provider.Access</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>set f="$(SolutionDir)..\Transformalize\Pipeline.Command\bin\x64\$(ConfigurationName)\plugins"
+    <PostBuildEvent>set f="$(SolutionDir)..\Transformalize\Pipeline.Command\plugins"
 
-if exist %25f%25 copy /Y "$(TargetDir)*.*" "%25f%25"</PostBuildEvent>
+if exist %25f%25 copy /Y "$(TargetDir)Dapper.dll" "%25f%25"
+if exist %25f%25 copy /Y "$(TargetDir)Transformalize.Provider.Ado.dll" "%25f%25"
+if exist %25f%25 copy /Y "$(TargetDir)Transformalize.Provider.Access.dll" "%25f%25"
+if exist %25f%25 copy /Y "$(TargetDir)Transformalize.Provider.Access.Autofac.dll" "%25f%25"</PostBuildEvent>
   </PropertyGroup>
 </Project>

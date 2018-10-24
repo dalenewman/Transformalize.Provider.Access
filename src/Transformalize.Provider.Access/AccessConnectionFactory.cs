@@ -71,6 +71,9 @@ namespace Transformalize.Providers.Access {
             if (_c.ConnectionString != string.Empty)
                 return _c.ConnectionString;
 
+            // Microsoft.ACE.OLEDB.12.0
+            // https://www.microsoft.com/en-us/download/details.aspx?id=13255
+
             var file = new FileInfo(_c.File == string.Empty ? _c.Database : _c.File);
             var cs = _c.ConnectionString = new OleDbConnectionStringBuilder {
                 ConnectionString = $@"Provider=Microsoft.Jet.OLEDB.4.0;Data Source={file.FullName};User Id={_c.User};Password={_c.Password};",

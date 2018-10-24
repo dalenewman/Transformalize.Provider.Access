@@ -28,13 +28,14 @@ using Transformalize.Providers.Ado;
 using Transformalize.Transforms.System;
 
 namespace Transformalize.Providers.Access.Autofac {
-    public class AdoModule : Module {
+    public class AccessModule : Module {
+
         private readonly Process _process;
-        private const string PROVIDER = "access";
+        private const string Provider = "access";
 
-        public AdoModule() { }
+        public AccessModule() { }
 
-        public AdoModule(Process process) {
+        public AccessModule(Process process) {
             _process = process;
         }
 
@@ -44,7 +45,7 @@ namespace Transformalize.Providers.Access.Autofac {
                 return;
 
             // connections
-            foreach (var connection in _process.Connections.Where(c => c.Provider == PROVIDER)) {
+            foreach (var connection in _process.Connections.Where(c => c.Provider == Provider)) {
 
                 // Connection Factory
                 builder.Register<IConnectionFactory>(ctx => {
@@ -65,7 +66,7 @@ namespace Transformalize.Providers.Access.Autofac {
             }
 
             // entity input
-            foreach (var entity in _process.Entities.Where(e => _process.Connections.First(c => c.Name == e.Connection).Provider == PROVIDER)) {
+            foreach (var entity in _process.Entities.Where(e => _process.Connections.First(c => c.Name == e.Connection).Provider == Provider)) {
 
                 // INPUT READER
                 builder.Register<IRead>(ctx => {
@@ -101,7 +102,7 @@ namespace Transformalize.Providers.Access.Autofac {
             }
 
             // entity output
-            if (_process.Output().Provider == PROVIDER) {
+            if (_process.Output().Provider == Provider) {
 
                 var calc = _process.ToCalculatedFieldsProcess();
 
