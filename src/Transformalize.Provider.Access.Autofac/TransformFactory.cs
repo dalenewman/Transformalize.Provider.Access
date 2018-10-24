@@ -16,9 +16,9 @@
 // limitations under the License.
 #endregion
 
+using Autofac;
 using System.Collections.Generic;
 using System.Linq;
-using Autofac;
 using Transformalize.Configuration;
 using Transformalize.Context;
 using Transformalize.Contracts;
@@ -35,28 +35,17 @@ namespace Transformalize.Providers.Access.Autofac {
             foreach (var f in fields.Where(f => f.Transforms.Any() || f.Validators.Any())) {
                 var field = f;
 
-                if (field.RequiresCompositeValidator()) {
-                    var composite = new List<ITransform>();
-                    foreach (var t in field.Transforms) {
-                        var transformContext = new PipelineContext(ctx.Resolve<IPipelineLogger>(), context.Process, context.Entity, field, t);
-                        if (TryTransform(ctx, transformContext, out var add)) {
-                            composite.Add(add);
-                        }
-                    }
-                    var entityContext = new PipelineContext(ctx.Resolve<IPipelineLogger>(), context.Process, context.Entity, field);
-                    transforms.Add(new CompositeValidator(entityContext, composite));
-                } else {
-                    foreach (var t in field.Transforms) {
-                        var transformContext = new PipelineContext(ctx.Resolve<IPipelineLogger>(), context.Process, context.Entity, field, t);
-                        if (TryTransform(ctx, transformContext, out var add)) {
-                            transforms.Add(add);
-                        }
+
+                foreach (var t in field.Transforms) {
+                    var transformContext = new PipelineContext(ctx.Resolve<IPipelineLogger>(), context.Process, context.Entity, field, t);
+                    if (TryTransform(ctx, transformContext, out var add)) {
+                        transforms.Add(add);
                     }
                 }
-                
+
                 // add conversion if necessary
                 var lastType = transforms.Last().Returns;
-                if (lastType != null &&  lastType != "object" && field.Type != lastType) {
+                if (lastType != null && lastType != "object" && field.Type != lastType) {
                     context.Warn($"The output field {field.Alias} is not setup to receive a {lastType} type. It expects a {field.Type}.  Adding conversion.");
                     transforms.Add(new ConvertTransform(new PipelineContext(ctx.Resolve<IPipelineLogger>(), context.Process, context.Entity, field, new Operation { Method = "convert" })));
                 }

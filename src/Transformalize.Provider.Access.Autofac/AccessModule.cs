@@ -30,22 +30,18 @@ using Transformalize.Transforms.System;
 namespace Transformalize.Providers.Access.Autofac {
     public class AccessModule : Module {
 
-        private readonly Process _process;
-        private const string Provider = "access";
-
-        public AccessModule() { }
-
-        public AccessModule(Process process) {
-            _process = process;
-        }
+        private const string Access = "access";
 
         protected override void Load(ContainerBuilder builder) {
 
-            if (_process == null)
+            if (!builder.Properties.ContainsKey("Process")) {
                 return;
+            }
+
+            var process = (Process)builder.Properties["Process"];
 
             // connections
-            foreach (var connection in _process.Connections.Where(c => c.Provider == Provider)) {
+            foreach (var connection in process.Connections.Where(c => c.Provider == Access)) {
 
                 // Connection Factory
                 builder.Register<IConnectionFactory>(ctx => {
@@ -66,7 +62,7 @@ namespace Transformalize.Providers.Access.Autofac {
             }
 
             // entity input
-            foreach (var entity in _process.Entities.Where(e => _process.Connections.First(c => c.Name == e.Connection).Provider == Provider)) {
+            foreach (var entity in process.Entities.Where(e => process.Connections.First(c => c.Name == e.Connection).Provider == Access)) {
 
                 // INPUT READER
                 builder.Register<IRead>(ctx => {
@@ -102,20 +98,20 @@ namespace Transformalize.Providers.Access.Autofac {
             }
 
             // entity output
-            if (_process.Output().Provider == Provider) {
+            if (process.Output().Provider == Access) {
 
-                var calc = _process.ToCalculatedFieldsProcess();
+                var calc = process.ToCalculatedFieldsProcess();
 
                 // PROCESS OUTPUT CONTROLLER
                 builder.Register<IOutputController>(ctx => {
                     var output = ctx.Resolve<OutputContext>();
-                    if (_process.Mode != "init")
+                    if (process.Mode != "init")
                         return new NullOutputController();
 
                     switch (output.Connection.Provider) {
                         case "access":
                             var actions = new List<IAction> { new AdoStarViewCreator(output, ctx.ResolveNamed<IConnectionFactory>(output.Connection.Key)) };
-                            if (_process.Flatten) {
+                            if (process.Flatten) {
                                 actions.Add(new AdoFlatTableCreator(output, ctx.ResolveNamed<IConnectionFactory>(output.Connection.Key)));
                             }
                             return new AdoStarController(output, actions);
@@ -127,19 +123,19 @@ namespace Transformalize.Providers.Access.Autofac {
                 // PROCESS CALCULATED READER
                 builder.Register<IRead>(ctx => {
                     var calcContext = new PipelineContext(ctx.Resolve<IPipelineLogger>(), calc, calc.Entities.First());
-                    var outputContext = new OutputContext(calcContext, new Incrementer(calcContext));
+                    var outputContext = new OutputContext(calcContext);
                     var cf = ctx.ResolveNamed<IConnectionFactory>(outputContext.Connection.Key);
                     var capacity = outputContext.Entity.Fields.Count + outputContext.Entity.CalculatedFields.Count;
                     var rowFactory = new RowFactory(capacity, false, false);
-                    return new AdoStarParametersReader(outputContext, _process, cf, rowFactory);
+                    return new AdoStarParametersReader(outputContext, process, cf, rowFactory);
                 }).As<IRead>();
 
                 // PROCESS CALCULATED FIELD WRITER
                 builder.Register<IWrite>(ctx => {
                     var calcContext = new PipelineContext(ctx.Resolve<IPipelineLogger>(), calc, calc.Entities.First());
-                    var outputContext = new OutputContext(calcContext, new Incrementer(calcContext));
+                    var outputContext = new OutputContext(calcContext);
                     var cf = ctx.ResolveNamed<IConnectionFactory>(outputContext.Connection.Key);
-                    return new AdoCalculatedFieldUpdater(outputContext, _process, cf);
+                    return new AdoCalculatedFieldUpdater(outputContext, process, cf);
                 }).As<IWrite>();
 
                 // PROCESS INITIALIZER
@@ -155,7 +151,7 @@ namespace Transformalize.Providers.Access.Autofac {
                 }).As<IInitializer>();
 
                 // ENTITIES
-                foreach (var entity in _process.Entities) {
+                foreach (var entity in process.Entities) {
 
                     builder.Register<IOutputProvider>(ctx => {
 
@@ -188,7 +184,7 @@ namespace Transformalize.Providers.Access.Autofac {
                     builder.Register<IOutputController>(ctx => {
 
                         var output = ctx.ResolveNamed<OutputContext>(entity.Key);
-                        var initializer = _process.Mode == "init" ? (IAction)new AdoEntityInitializer(output, ctx.ResolveNamed<IConnectionFactory>(output.Connection.Key)) : new NullInitializer();
+                        var initializer = process.Mode == "init" ? (IAction)new AdoEntityInitializer(output, ctx.ResolveNamed<IConnectionFactory>(output.Connection.Key)) : new NullInitializer();
 
                         switch (output.Connection.Provider) {
                             case "access":
@@ -256,7 +252,7 @@ namespace Transformalize.Providers.Access.Autofac {
                             var rowCapacity = context.Entity.GetPrimaryKey().Count();
                             var rowFactory = new RowFactory(rowCapacity, false, true);
 
-                            var outputConnection = _process.Output();
+                            var outputConnection = process.Output();
                             switch (outputConnection.Provider) {
                                 case "access":
                                     var ocf = ctx.ResolveNamed<IConnectionFactory>(outputConnection.Key);
@@ -268,7 +264,7 @@ namespace Transformalize.Providers.Access.Autofac {
                         })).Named<IReadOutputKeysAndHashCodes>(entity.Key);
 
                         builder.Register(ctx => {
-                            var outputConnection = _process.Output();
+                            var outputConnection = process.Output();
                             var outputContext = ctx.ResolveNamed<OutputContext>(entity.Key);
 
                             switch (outputConnection.Provider) {
