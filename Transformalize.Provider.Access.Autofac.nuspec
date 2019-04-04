@@ -2,26 +2,26 @@
 <package>
   <metadata>
     <id>Transformalize.Provider.Access.Autofac</id>
-    <version>0.2.9.2-beta</version>
-    <title>Transformalize Provider for 32-bit Access Autofac Module</title>
+    <version>0.5.0-beta</version>
+    <title>Transformalize Provider Access Autofac Module</title>
     <authors>Dale Newman</authors>
     <owners>Dale Newman</owners>
     <licenseUrl>https://github.com/dalenewman/Transformalize/blob/master/LICENSE.md</licenseUrl>
     <projectUrl>https://github.com/dalenewman/Transformalize</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Transformalize Provider for 32-bit Access Autofac Module</description>
-    <releaseNotes>moved out of main solution</releaseNotes>
-    <copyright>Copyright 2013-2017</copyright>
+    <description>Transformalize Provider Access Autofac Module</description>
+    <releaseNotes>updated dependencies</releaseNotes>
+    <copyright>Copyright 2013-2019</copyright>
     <tags>etl</tags>
     <dependencies>
-      <group targetFramework="net452">
+      <group targetFramework="net462">
         <dependency id="Autofac" version="4.6.2" />
-        <dependency id="Transformalize.Provider.Access" version="0.2.9.2-beta" />
+        <dependency id="Transformalize.Provider.Access" version="0.5.0-beta" />
       </group>
     </dependencies>
   </metadata>
   <files>
-    <file src="src\Transformalize.Provider.Access.Autofac\bin\Release\Transformalize.Provider.Access.Autofac.dll" target="lib\net452\Transformalize.Provider.Access.Autofac.dll" />
-    <file src="src\Transformalize.Provider.Access.Autofac\bin\Release\files\access\empty.mdb" target="lib\net452\files\access\empty.mdb" />
+    <file src="src\Transformalize.Provider.Access.Autofac\bin\Release\Transformalize.Provider.Access.Autofac.dll" target="lib\net462\Transformalize.Provider.Access.Autofac.dll" />
+    <file src="src\Transformalize.Provider.Access.Autofac\bin\Release\files\access\empty.mdb" target="lib\net462\files\access\empty.mdb" />
   </files>
 </package>
