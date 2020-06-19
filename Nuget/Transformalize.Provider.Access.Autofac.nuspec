@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<package>
+   <metadata>
+      <id>Transformalize.Provider.Access.Autofac</id>
+      <version>0.8.8-beta</version>
+      <title>Transformalize Provider Access Autofac Module</title>
+      <authors>Dale Newman</authors>
+      <owners>Dale Newman</owners>
+      <license type="expression">Apache-2.0</license>
+      <projectUrl>https://github.com/dalenewman/Transformalize</projectUrl>
+      <requireLicenseAcceptance>false</requireLicenseAcceptance>
+      <description>Transformalize Provider Access Autofac Module</description>
+      <releaseNotes>updated dependencies</releaseNotes>
+      <copyright>Copyright 2013-2019</copyright>
+      <tags>etl</tags>
+      <dependencies>
+         <group targetFramework="net462">
+            <dependency id="Transformalize.Container.Autofac" version="0.8.8-beta" />
+            <dependency id="Transformalize.Provider.Access" version="0.8.8-beta" />
+         </group>
+      </dependencies>
+   </metadata>
+   <files>
+      <file src="..\src\Transformalize.Provider.Access.Autofac\bin\Debug\Transformalize.Provider.Access.Autofac.dll" target="lib\net462\Transformalize.Provider.Access.Autofac.dll" />
+      <file src="..\src\Transformalize.Provider.Access.Autofac\bin\Debug\Transformalize.Provider.Access.Autofac.pdb" target="lib\net462\Transformalize.Provider.Access.Autofac.pdb" />
+      <file src="..\src\Transformalize.Provider.Access.Autofac\bin\Debug\files\access\empty.mdb" target="lib\net462\files\access\empty.mdb" />
+   </files>
+</package>

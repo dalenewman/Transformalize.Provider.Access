@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27004.2010
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30128.74
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transformalize.Provider.Access", "src\Transformalize.Provider.Access\Transformalize.Provider.Access.csproj", "{C8E14F90-AD0B-42F3-924B-9D6F3852267F}"
 EndProject
@@ -10,10 +10,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D348B32E-119A-4677-ABD6-D5EF6D98C130}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
-		nuget.bat = nuget.bat
 		README.md = README.md
-		Transformalize.Provider.Access.Autofac.nuspec = Transformalize.Provider.Access.Autofac.nuspec
-		Transformalize.Provider.Access.nuspec = Transformalize.Provider.Access.nuspec
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "arrangements", "arrangements", "{B2FD8CF7-0979-4925-AD65-7CD6FBD2D66C}"
@@ -22,6 +19,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "arrangements", "arrangement
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests", "src\IntegrationTests\IntegrationTests.csproj", "{E7F2BA91-7CD8-47F0-A97E-BE7B21C7A1FC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Provider", "Provider", "{6EEC395F-C421-4FEB-9508-406404E78530}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Provider.Autofac", "Provider.Autofac", "{76C16C39-67E9-4530-AE00-6A9D4E0A84FA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuget", "nuget", "{8B3B8416-FCEA-45A2-892B-7B4D703AD1F9}"
+	ProjectSection(SolutionItems) = preProject
+		Nuget\myget.push.bat = Nuget\myget.push.bat
+		Nuget\nuget.bat = Nuget\nuget.bat
+		Nuget\nuget.push.bat = Nuget\nuget.push.bat
+		Nuget\Transformalize.Provider.Access.Autofac.nuspec = Nuget\Transformalize.Provider.Access.Autofac.nuspec
+		Nuget\Transformalize.Provider.Access.nuspec = Nuget\Transformalize.Provider.Access.nuspec
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,7 +56,10 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{C8E14F90-AD0B-42F3-924B-9D6F3852267F} = {6EEC395F-C421-4FEB-9508-406404E78530}
+		{954F8DAF-AE26-4EC2-9C52-CD42EA5788E2} = {76C16C39-67E9-4530-AE00-6A9D4E0A84FA}
 		{B2FD8CF7-0979-4925-AD65-7CD6FBD2D66C} = {D348B32E-119A-4677-ABD6-D5EF6D98C130}
+		{8B3B8416-FCEA-45A2-892B-7B4D703AD1F9} = {D348B32E-119A-4677-ABD6-D5EF6D98C130}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {699C62C9-CA65-4E27-80FB-D1DF63B181A7}

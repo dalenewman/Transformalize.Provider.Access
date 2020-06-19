@@ -63,7 +63,7 @@ namespace Transformalize.Providers.Access.Autofac {
             }
 
             // entity input
-            foreach (var entity in process.Entities.Where(e => process.Connections.First(c => c.Name == e.Connection).Provider == Access)) {
+            foreach (var entity in process.Entities.Where(e => process.Connections.First(c => c.Name == e.Input).Provider == Access)) {
 
                 // INPUT READER
                 builder.Register<IRead>(ctx => {
@@ -99,7 +99,7 @@ namespace Transformalize.Providers.Access.Autofac {
             }
 
             // entity output
-            if (process.Output().Provider == Access) {
+            if (process.GetOutputConnection().Provider == Access) {
 
                 var calc = process.ToCalculatedFieldsProcess();
 
@@ -253,7 +253,7 @@ namespace Transformalize.Providers.Access.Autofac {
                             var rowCapacity = context.Entity.GetPrimaryKey().Count();
                             var rowFactory = new RowFactory(rowCapacity, false, true);
 
-                            var outputConnection = process.Output();
+                            var outputConnection = process.GetOutputConnection();
                             switch (outputConnection.Provider) {
                                 case "access":
                                     var ocf = ctx.ResolveNamed<IConnectionFactory>(outputConnection.Key);
@@ -265,7 +265,7 @@ namespace Transformalize.Providers.Access.Autofac {
                         })).Named<IReadOutputKeysAndHashCodes>(entity.Key);
 
                         builder.Register(ctx => {
-                            var outputConnection = process.Output();
+                            var outputConnection = process.GetOutputConnection();
                             var outputContext = ctx.ResolveNamed<OutputContext>(entity.Key);
 
                             switch (outputConnection.Provider) {
@@ -294,7 +294,7 @@ namespace Transformalize.Providers.Access.Autofac {
                             handler.Register(TransformFactory.GetTransforms(ctx, context, primaryKey));
                             handler.Register(new StringTruncateTransfom(context, primaryKey));
 
-                            return new ParallelDeleteHandler(handler);
+                            return handler;
                         }).Named<IEntityDeleteHandler>(entity.Key);
                     }
 
